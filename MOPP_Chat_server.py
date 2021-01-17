@@ -129,6 +129,17 @@ while KeyboardInterrupt:
         serversock.sendto(encode_buffer(encode(':bye'),speed), addr)
         del receivers[client]
         debug ("Removing client %s on request" % client)
+
+      elif decode_payload(data) == encode(':em'):
+        if ECHO:
+          ECHO = False
+          serversock.sendto(encode_buffer(encode('off'),speed), addr)
+        else:
+          ECHO = True
+          serversock.sendto(encode_buffer(encode('on'),speed), addr)
+
+      elif decode_payload(data) == encode(':usr'):
+        serversock.sendto(encode_buffer(encode('%i users'%len(receivers)),speed), addr)        
       else:
         broadcast (data, client)
         receivers[client] = time.time()
@@ -144,8 +155,7 @@ while KeyboardInterrupt:
       else:
         debug ("-unknown client, ignoring-")
 
-  #except socket.timeout:
-  except OSError:
+  except socket.timeout:
     # Send UDP keepalives
     for c in receivers.keys():
       ip,port = c.split(':')

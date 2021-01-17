@@ -164,7 +164,7 @@ while KeyboardInterrupt:
       else:
         debug ("-unknown client, ignoring-")
 
-  #except socket.timeout:
+  #except socket.timeout
   except OSError:
     # Send UDP keepalives
     for c in receivers.keys():
