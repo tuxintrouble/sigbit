@@ -18,7 +18,7 @@ server_url = "morse.dyndnss.net"
 server_port = 7373
 key = Key("/dev/ttyUSB0")
 buzzer = Sidetone()
-buzzer.recompute_tones(20,700) #speed in wpm | tone freq in Hz
+buzzer.recompute_tones(18,550)
 keyer = Keyer(key, buzzer)
 trx = TRX( buzzer,url=(server_url,server_port),timeout=0)
 
@@ -28,9 +28,10 @@ if __name__ == "__main__":
         buffer = keyer.process_iambic()
         if buffer != None:
             trx.sendto(trx.encode_buffer(buffer, buzzer.wpm), (server_url,server_port))
-
+            print(decode(buffer))
         if keyer.state == "state_start": 
             time.sleep(0.05)
             data = trx.recv()
             if data != None and data !=b'':
+                print(decode(trx.decode_payload(data)))
                 buzzer.play_buffer(trx.decode_payload(data))
