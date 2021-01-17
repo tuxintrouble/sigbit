@@ -65,7 +65,7 @@ After launching main.py, you should hear a sidetone if you use your paddle.
 
 ## connecting to a server
 
-The code is sent to the server but will not be relayed, unless you register sending **HI** (... ..) in morse code. The server will then respond sending ***WELCOME*** (.-- . .-.. -.-. --- -- .) and you will be able to receive transmissions from all other registered users and to send code to all other connected users. The code is sent automatically as soon as the end of a word is detected.
+The code is sent to the server but will not be relayed, unless you register sending **HI** (.... ..) in morse code. The server will then respond sending ***WELCOME*** (.-- . .-.. -.-. --- -- .) and you will be able to receive transmissions from all other registered users and to send code to all other connected users. The code is sent automatically as soon as the end of a word is detected.
 
 You are either disconnected by the server after 30 minutes of inactivity or you can disconnect by sending **:QRT** (---... --.- .-. -) in morse code. In either case the server will sign off sending ***BYE*** (-... -.-- .).
 
