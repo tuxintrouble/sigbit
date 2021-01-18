@@ -36,10 +36,11 @@ SigBit runs on python3 and requires the following non-standard libraries:
 The easiest way to obtain them is via pip3 install:
 
 on linux run in a shell: 
+	
 	pip3 install pyserial sounddevice
 
-
 You may have to change the _key_ settings in main.py to reflect your serial port.
+	
 	key = "/dev/ttyUSB0"
 
 Comon values are /dev/ttyUSB0, /dev/ttyUSB1 or /devtty0, etc. 
@@ -48,6 +49,7 @@ On windows it will be something like COM1, COM2, etc.
 On linux you need to add your user to the group _dialout_
 
 on linux run in a shell: 
+
 	sudo adduser <your_user_name> dialout
 
 Edit the following variables to match your server IP or hostname and port:
@@ -57,6 +59,7 @@ Edit the following variables to match your server IP or hostname and port:
 
 
 You can then launch the script "main.py" by running from a shell:
+	
 	python3 main.py
 
 
