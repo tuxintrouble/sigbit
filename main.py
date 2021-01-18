@@ -14,7 +14,7 @@ from keyer import Keyer
 from util import morse, decode
 from trx import *
 
-server_url = "morse.dyndnss.net"
+server_url = "morse.spdns.org"
 server_port = 7373
 key = Key("/dev/ttyUSB0")
 buzzer = Sidetone()
