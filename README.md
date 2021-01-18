@@ -52,7 +52,7 @@ on linux run in a shell:
 
 Edit the following variables to match your server IP or hostname and port:
 
-	server_url = "morse.dyndnss.net" #this can also be a local IP address or hostname for your server
+	server_url = "morse.spdns.org" #this can also be a local IP address or hostname for your server
 	server_port = 7373
 
 
