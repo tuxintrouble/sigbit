@@ -10,7 +10,7 @@
 # uses code fragments from https://github.com/sp9wpn/m32_chat_server
 
 import socket
-import time, datetime
+import time
 import struct
 from math import ceil
 from util import encode, decode, zfill, ljust
@@ -162,7 +162,6 @@ while KeyboardInterrupt:
         NTP_QUERY[0] = 0x1B
         ntp_addr = socket.getaddrinfo(ntp_host, 123)[0][-1]
         ntp_sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-
         try:
           ntp_sock.settimeout(1)
           ntp_res = ntp_sock.sendto(NTP_QUERY, ntp_addr)
