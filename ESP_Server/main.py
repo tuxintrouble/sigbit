@@ -10,7 +10,8 @@
 # uses code fragments from https://github.com/sp9wpn/m32_chat_server
 
 import socket
-import time
+import time, datetime
+import struct
 from math import ceil
 from util import encode, decode, zfill, ljust
 
@@ -26,9 +27,16 @@ MAX_CLIENTS = 10
 KEEPALIVE = 10
 DEBUG = 1
 ECHO =False
+
+# The NTP host can be configured at runtime by doing: ntptime.host = 'myhost.org'
+ntp_host = "pool.ntp.org"
+
 serversock = socket.socket(socket.AF_INET,socket.SOCK_DGRAM)
 serversock.bind((SERVER_IP, UDP_PORT))
 serversock.settimeout(KEEPALIVE)
+
+# (date(2000, 1, 1) - date(1900, 1, 1)).days * 24*60*60
+NTP_DELTA = 3155673600
 
 receivers = {}
 
@@ -148,6 +156,24 @@ while KeyboardInterrupt:
 
       elif decode_payload(data) == encode(':usr'):
         serversock.sendto(encode_buffer(encode('%i users'%len(receivers)),speed), addr)
+
+      elif decode_payload(data) == encode(':qtr'):
+        NTP_QUERY = bytearray(48)
+        NTP_QUERY[0] = 0x1B
+        ntp_addr = socket.getaddrinfo(ntp_host, 123)[0][-1]
+        ntp_sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+
+        try:
+          ntp_sock.settimeout(1)
+          ntp_res = ntp_sock.sendto(NTP_QUERY, ntp_addr)
+          ntp_msg = ntp_sock.recv(48)
+        finally:
+          ntp_sock.close()
+        val = struct.unpack("!I", ntp_msg[40:44])[0]
+        val = val - NTP_DELTA
+        tm = time.gmtime(val)
+        serversock.sendto(encode_buffer(encode('%s' %time.strftime("%H%M",tm)),speed), addr)
+
       else:
         broadcast (data, client)
         receivers[client] = time.time()
