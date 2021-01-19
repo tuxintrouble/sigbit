@@ -41,5 +41,6 @@ if __name__ == "__main__":
 
                 #auto reconnect
                 if AUTORECONNECT and (trx.decode_payload(data) == encode(":bye")):
-                    buffer = encode("hi")
+                    buffer = encode(':reconnect')
                     trx.sendto(trx.encode_buffer(buffer, buzzer.wpm), (server_url,server_port))
+                    print("reconnect")

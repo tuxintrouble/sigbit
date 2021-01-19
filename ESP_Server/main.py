@@ -153,10 +153,11 @@ while KeyboardInterrupt:
         receivers[client] = time.time()
 
     else:
-      if decode_payload(data) == encode('hi'):
+      if decode_payload(data) == encode('hi') or decode_payload(data) == encode(':reconnect'):
         if (len(receivers) < MAX_CLIENTS):
           receivers[client] = time.time()
-          welcome(client, speed)
+          if decode_payload(data) == encode('hi'):
+          	welcome(client, speed)
         else:
           reject(client, speed)
           debug ("ERR: maximum clients reached")
