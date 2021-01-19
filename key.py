@@ -49,11 +49,15 @@ class SerialKey():
 
     
     def __init__(self, port):
-        import serial,time
+        import serial,time, sys
         
         self.debounce_factor = 0.001 # sec
-    
-        self.ser = serial.Serial(port)
+
+        try:
+            self.ser = serial.Serial(port)
+        except serial.serialutil.SerialException as err:
+            print(err)
+            sys.exit()
         self.last_time_dit = time.time()
         self.last_time_dah = time.time()
         

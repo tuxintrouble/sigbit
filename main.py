@@ -11,14 +11,16 @@ import threading, time
 from key import SerialKey as Key
 from sidetone import SDSidetone as Sidetone
 from keyer import Keyer
-from util import morse, decode
+from util import morse, decode, encode
 from trx import *
+
+AUTORECONNECT = True
 
 server_url = "morse.spdns.org"
 server_port = 7373
 key = Key("/dev/ttyUSB0")
 buzzer = Sidetone()
-buzzer.recompute_tones(18,550)
+buzzer.recompute_tones(18,550) #wpm / Hz
 keyer = Keyer(key, buzzer)
 trx = TRX( buzzer,url=(server_url,server_port),timeout=0)
 
@@ -35,3 +37,8 @@ if __name__ == "__main__":
             if data != None and data !=b'':
                 print(decode(trx.decode_payload(data)))
                 buzzer.play_buffer(trx.decode_payload(data))
+
+                #auto reconnect
+                if AUTORECONNECT and (trx.decode_payload(data) == encode(":bye")):
+                    buffer = encode("hi")
+                    trx.sendto(trx.encode_buffer(buffer, buzzer.wpm), (server_url,server_port))
