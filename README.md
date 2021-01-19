@@ -79,6 +79,8 @@ Usually the sending user is excluded from receiving his / her own transmissions.
 
 When sending the command **:USR** (---... ..- ... .-.), the server will report the number of currently active users.
 
+When sending the command **:QTR** (---... --.- - .-.), the server answers with the current utc time.
+
 ## client morse commands
 
 > Note: some of the following commands may not have been implemented, yet
@@ -87,12 +89,11 @@ There are a couple of client commands:
 
 **/QRS** (-..-. --.- .-. ...) decreases keyer speed one WPM slower, responds with current speed in WPM.
 
-
 **/QRQ** (-..-. --.- .-. --.-) increases keyer speed one WPM, responds with current speed in WPM.
 
-**/QTR** (---... --.- - .-.) responds with the current local time.
+**/QTR** -..-. --.- - .-.) responds with the current utc time.
 
-**/CMD** (---... -.-. -- -..) enter command mode, responds with **CMD?** (-.-. -- -.. ..--..), waits for a command to be entered. Command mode can be left by sending 4 or 8 dits.
+**/CMD** (-..-. -.-. -- -..) enter command mode, responds with **CMD?** (-.-. -- -.. ..--..), waits for a command to be entered. Command mode can be left by sending 4 or 8 dits.
 
 In command mode: **SPEED** (... .--. . . -..), responds with ***SPEED?*** (... .--. . . -.. ..--..) allows to enter a new two digit keyer speed directely.
 
