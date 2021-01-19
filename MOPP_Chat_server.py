@@ -16,7 +16,7 @@ from util import encode, decode, zfill, ljust
 
 SERVER_IP = "0.0.0.0"
 UDP_PORT = 7373
-CLIENT_TIMEOUT = 60 * 30
+CLIENT_TIMEOUT = 60 * 10
 MAX_CLIENTS = 10
 KEEPALIVE = 10
 DEBUG = 1

@@ -31,6 +31,7 @@ if __name__ == "__main__":
         if buffer != None:
             trx.sendto(trx.encode_buffer(buffer, buzzer.wpm), (server_url,server_port))
             print(decode(buffer))
+            
         if keyer.state == "state_start": 
             time.sleep(0.05)
             data = trx.recv()
