@@ -67,6 +67,10 @@ class TRX():
         00 = End of Character
         11 = End of Word
         """
+        #prevent overflow in wpm - we have only 6 bits
+        if wpm < 63:
+            wpm = 63
+            
         #create 14 bit header
         m = zfill(bin(self.protocol_version)[2:],2) #2bits for protocol_version
         m += zfill(bin(self.serial)[2:],6) #6bits for serial number
@@ -80,7 +84,12 @@ class TRX():
         res = ''
         for i in range(0, len(m),8):
             res += chr(int(m[i:i+8],2)) #convert 8bit chunks to integers and the to characters
-        self.serial +=1
+
+        #prevent overflow - we have only 6 bits
+        if self.serial < 62:
+            self.serial +=1
+        else:
+            self.serial = 0
 
         return res.encode('utf-8') #convert string of characters to bytes
 

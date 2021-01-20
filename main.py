@@ -17,6 +17,7 @@ from trx import *
 AUTORECONNECT = True
 
 server_url = "morse.spdns.org"
+#server_url = "localhost"
 server_port = 7373
 key = Key("/dev/ttyUSB0")
 buzzer = Sidetone()

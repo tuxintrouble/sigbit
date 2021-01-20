@@ -52,7 +52,11 @@ def encode_buffer(buffer,wpm):
   global protocol_version
   global serial
   '''creates an bytes for sending throught a socket'''
-
+  
+  #prevent overflow in wpm - we have only 6 bits in MOPP
+  if wpm < 63:
+      wpm = 63
+      
   #create 14 bit header
   m = zfill(bin(protocol_version)[2:],2) #2bits for protocol_version
   m += zfill(bin(serial)[2:],6) #6bits for serial number
@@ -68,7 +72,12 @@ def encode_buffer(buffer,wpm):
   for i in range(0, len(m),8):
     res += chr(int(m[i:i+8],2)) #convert 8bit chunks to integers and the to characters
 
-  serial +=1
+  #prevent overflow - we have only 6 bits MOPP
+  if serial < 62:
+    serial +=1
+  else:
+    serial = 0
+    
   return res.encode('utf-8') #convert string of characters to bytes
 
 
@@ -156,23 +165,7 @@ while KeyboardInterrupt:
 
       elif decode_payload(data) == encode(':usr'):
         serversock.sendto(encode_buffer(encode('%i users'%len(receivers)),speed), addr)
-
-      elif decode_payload(data) == encode(':qtr'):
-        NTP_QUERY = bytearray(48)
-        NTP_QUERY[0] = 0x1B
-        ntp_addr = socket.getaddrinfo(ntp_host, 123)[0][-1]
-        ntp_sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-        try:
-          ntp_sock.settimeout(1)
-          ntp_res = ntp_sock.sendto(NTP_QUERY, ntp_addr)
-          ntp_msg = ntp_sock.recv(48)
-        finally:
-          ntp_sock.close()
-        val = struct.unpack("!I", ntp_msg[40:44])[0]
-        val = val - NTP_DELTA
-        tm = time.gmtime(val)
-        serversock.sendto(encode_buffer(encode('%s' %time.strftime("%H%M",tm)),speed), addr)
-
+      
       else:
         broadcast (data, client)
         receivers[client] = time.time()
