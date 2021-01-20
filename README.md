@@ -79,8 +79,6 @@ Usually the sending user is excluded from receiving his / her own transmissions.
 
 When sending the command **:USR** (---... ..- ... .-.), the server will report the number of currently active users.
 
-When sending the command **:QTR** (---... --.- - .-.), the server answers with the current utc time.
-
 ## client morse commands
 
 > Note: some of the following commands may not have been implemented, yet
