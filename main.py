@@ -13,15 +13,23 @@ from sidetone import SDSidetone as Sidetone
 from keyer import Keyer
 from util import morse, decode, encode
 from trx import *
+from appconfig import AppConfig
 
-AUTORECONNECT = True
+__version__= "0.1"
 
-server_url = "morse.spdns.org"
-#server_url = "localhost"
-server_port = 7373
-key = Key("/dev/ttyUSB0")
+cfg = AppConfig("SigBitTRX","DJ5SE",__version__)
+
+server_url = cfg.get('server_url')
+server_port = cfg.getint("server_port")
+serial_port = cfg.get("serial_port")
+sidetone_freq = cfg.getint("sidetone_freq")
+keyer_speed = cfg.getint("keyer_speed")
+AUTORECONNECT = cfg.getboolean('autoreconnect')
+decode_cw = cfg.getboolean("decode_cw")
+
+key = Key(serial_port)
 buzzer = Sidetone()
-buzzer.recompute_tones(18,550) #wpm / Hz
+buzzer.recompute_tones(keyer_speed,sidetone_freq)
 keyer = Keyer(key, buzzer)
 trx = TRX( buzzer,url=(server_url,server_port),timeout=0)
 

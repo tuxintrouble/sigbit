@@ -52,10 +52,29 @@ on linux run in a shell:
 
 	sudo adduser <your_user_name> dialout
 
-Edit the following variables to match your server IP or hostname and port:
 
-	server_url = "morse.spdns.org" #this can also be a local IP address or hostname for your server
+# settings
+
+Sigbit is configured through a config.ini file. The location on this file is dependin on your operating system.
+
+>On Linux, you will find the configuration file under: 
+>	/home/<username>/.config/SigBitTRX/0.1
+>On Windows 7 it is under: 
+>	C:\\Users\\<username>\\AppData\\Local\\DJ5SE\\SigBitTRX
+>On Mac it is:
+>	/Users/<username>/Library/Application Support/SigBitTRX
+
+ 
+You can edit the following variables to match your server IP or hostname and port, as well as the keyer speed in WPM and the side tone frequency in Hz:
+
+	server_url = morse.spdns.org  #or IP address of alternative server
 	server_port = 7373
+	keyer_speed = 18 #WPM
+	serial_port = /dev/ttyUSB0
+	sidetone_freq = 550 #Hz
+	autoreconnect = True
+	decode_cw = True  #currently not used
+
 
 
 You can then launch the script "main.py" by running from a shell:
