@@ -36,9 +36,9 @@ To run these binary packages, simply call them from a console window (type **cmd
 
 **current releases**
 
-    [sigbit-trx_linux_64_0.1.0.app](https://github.com/tuxintrouble/sigbit/blob/main/dist-bin/sigbit-trx_linux_64_0.1.0.app)
+[sigbit-trx_linux_64_0.1.0.app](https://github.com/tuxintrouble/sigbit/blob/main/dist-bin/sigbit-trx_linux_64_0.1.0.app)
     
-    [sigbit-trx_win32_0.1.0.exe](https://github.com/tuxintrouble/sigbit/blob/main/dist-bin/sigbit-trx_win32_0.1.0.exe)
+[sigbit-trx_win32_0.1.0.exe](https://github.com/tuxintrouble/sigbit/blob/main/dist-bin/sigbit-trx_win32_0.1.0.exe)
 
 ###source installation
 
