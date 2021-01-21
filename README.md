@@ -28,6 +28,20 @@ Besides the serial interface, you will need a soundcard for the tones and a netw
 
 ## software installation
 
+###binary release packages
+
+Simply download the binary package that suits your operating system and copy it to your desired location (e.e. ***/home/<username>/bin*** on linux or ***C:\Program Files\sigbit***)   
+
+To run these binary packages, simply call them from a console window (type **cmd** on windows)
+
+**current releases**
+
+    [sigbit-trx_linux_64_0.1.0.app](https://github.com/tuxintrouble/sigbit/blob/main/dist-bin/sigbit-trx_linux_64_0.1.0.app)
+    
+    [sigbit-trx_win32_0.1.0.exe](https://github.com/tuxintrouble/sigbit/blob/main/dist-bin/sigbit-trx_win32_0.1.0.exe)
+
+###source installation
+
 SigBit runs on python3 and requires the following non-standard libraries:
 
 - pyserial
