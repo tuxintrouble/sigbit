@@ -29,10 +29,6 @@ class TRX():
         self.protocol_version = 1
         self.serial = 1
         
-        if not os.uname()[0].startswith("esp"): #disable for ESP systems
-            self.sock.setsockopt(socket.SOL_SOCKET, socket.SO_BROADCAST, True)
-
-
     def sendto(self, data, url):
         try:
             self.sock.sendto(data,url)

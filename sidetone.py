@@ -25,8 +25,6 @@ class SDSidetone():
 
 
         self.fs = 48000
-        sd.default.device = 'default'
-        #sd.default.samplerate = fs
         sd.default.samplerate = 44100 #don't know why, but this works
         #sd.default.blocksize = 384
         sd.default.channels = 1

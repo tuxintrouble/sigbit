@@ -33,12 +33,13 @@ SigBit runs on python3 and requires the following non-standard libraries:
 - pyserial
 - sounddevice
 - appdirs
+- numpy
 
 The easiest way to obtain them is via pip3 install:
 
 on linux run in a shell: 
 	
-	sudo python3 pip install pyserial sounddevice appdirs
+	sudo python3 pip install pyserial sounddevice appdirs numpy
 
 
 On linux you need to add your user to the group _dialout_
