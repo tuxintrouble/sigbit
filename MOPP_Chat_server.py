@@ -111,8 +111,8 @@ def decode_payload(unicodestring):
 def broadcast(data,client):
   global ECHO
   for c in receivers.keys():
-    #if c == client and not ECHO:
-     #continue
+    if c == client and not ECHO:
+     continue
     debug("Sending to %s" % c)
     ip,port = c.split(':')
     serversock.sendto(data, (ip, int(port)))
