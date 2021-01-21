@@ -9,7 +9,7 @@ MOPP_Chat_server.py runs on a regular PC.
 The script main.py implements a PC client and iambic keyer for use with an iambic paddle. The paddle can be connected to the PC using the serial / COM interface either buildt-in to the computer or via a USB to serial adapter.
 
 
-#setup
+# setup
 
 ## hardware requirements
 
@@ -28,7 +28,7 @@ Besides the serial interface, you will need a soundcard for the tones and a netw
 
 ## software installation
 
-###binary release packages
+### binary release packages
 
 Simply download the binary package that suits your operating system and copy it to your desired location (e.e. ***/home/<username>/bin*** on linux or ***C:\Program Files\sigbit***)   
 
@@ -40,7 +40,7 @@ To run these binary packages, simply call them from a console window (type **cmd
     
 [sigbit-trx_win32_0.1.0.exe](https://github.com/tuxintrouble/sigbit/blob/main/dist-bin/sigbit-trx_win32_0.1.0.exe)
 
-###source installation
+### source installation
 
 SigBit runs on python3 and requires the following non-standard libraries:
 
