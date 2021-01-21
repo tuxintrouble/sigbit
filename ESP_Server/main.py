@@ -4,7 +4,7 @@
 # https://github.com/tuxintrouble/sigbit
 # Author: Sebastian Stetter, DJ5SE
 # License: GNU GENERAL PUBLIC LICENSE Version 3
-# 
+#
 # Implements a chat server for the MOPP - morse over packet protocol
 # on an ESP Board with micro-python
 # uses code fragments from https://github.com/sp9wpn/m32_chat_server
@@ -28,15 +28,9 @@ KEEPALIVE = 10
 DEBUG = 0
 ECHO =False
 
-# The NTP host can be configured at runtime by doing: ntptime.host = 'myhost.org'
-ntp_host = "pool.ntp.org"
-
 serversock = socket.socket(socket.AF_INET,socket.SOCK_DGRAM)
 serversock.bind((SERVER_IP, UDP_PORT))
 serversock.settimeout(KEEPALIVE)
-
-# (date(2000, 1, 1) - date(1900, 1, 1)).days * 24*60*60
-NTP_DELTA = 3155673600
 
 receivers = {}
 
@@ -46,17 +40,17 @@ serial = 1
 def debug(str):
   if DEBUG:
     print(str)
-    
+
 def encode_buffer(buffer,wpm):
 
   global protocol_version
   global serial
   '''creates an bytes for sending throught a socket'''
-  
+
   #prevent overflow in wpm - we have only 6 bits in MOPP
   if wpm < 63:
       wpm = 63
-      
+
   #create 14 bit header
   m = zfill(bin(protocol_version)[2:],2) #2bits for protocol_version
   m += zfill(bin(serial)[2:],6) #6bits for serial number
@@ -65,7 +59,7 @@ def encode_buffer(buffer,wpm):
   #add payload
   for el in buffer:
     m += el
-    
+
   m = ljust(m,int(8*ceil(len(m)/8.0)),'0') #fill in incomplete byte
   res = ''
 
@@ -77,16 +71,16 @@ def encode_buffer(buffer,wpm):
     serial +=1
   else:
     serial = 0
-    
+
   return res.encode('utf-8') #convert string of characters to bytes
 
 
 def decode_header(unicodestring):
   '''converts a received morse code byte string and returns a list
-  with the header info [protocol_v, serial, wpm]''' 
+  with the header info [protocol_v, serial, wpm]'''
   bytestring = unicodestring.decode("utf-8")
   bitstring = ''
-  
+
   for byte in bytestring:
     bitstring += zfill(bin(ord(byte))[2:],8) #works in uPython
 
@@ -147,20 +141,20 @@ while KeyboardInterrupt:
   try:
     data, addr = serversock.recvfrom(64)
     client = addr[0] + ':' + str(addr[1])
-    
+
     if data == b'': #just a heartbeat signal from the client
       receivers[client] = time.time()
-      debug("heartbeat detected from %s " % client)      
+      debug("heartbeat detected from %s " % client)
       continue
-      
+
     speed = decode_header(data)[2]
-    
-    if client in receivers:      
+
+    if client in receivers:
       if decode_payload(data) == encode(':qrt'):
         serversock.sendto(encode_buffer(encode('bye'),speed), addr)
         del receivers[client]
         debug ("Removing client %s on request" % client)
-        
+
       elif decode_payload(data) == encode(':em'):
         if ECHO:
           ECHO = False
@@ -171,7 +165,7 @@ while KeyboardInterrupt:
 
       elif decode_payload(data) == encode(':usr'):
         serversock.sendto(encode_buffer(encode('%i users'%len(receivers)),speed), addr)
-      
+
       else:
         broadcast (data, client)
         receivers[client] = time.time()

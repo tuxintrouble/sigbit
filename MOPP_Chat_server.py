@@ -23,15 +23,9 @@ KEEPALIVE = 10
 DEBUG = 1
 ECHO =True
 
-# The NTP host can be configured at runtime by doing: ntptime.host = 'myhost.org'
-ntp_host = "pool.ntp.org"
-
 serversock = socket.socket(socket.AF_INET,socket.SOCK_DGRAM)
 serversock.bind((SERVER_IP, UDP_PORT))
 serversock.settimeout(KEEPALIVE)
-
-# (date(2000, 1, 1) - date(1900, 1, 1)).days * 24*60*60
-NTP_DELTA = 3155673600
 
 receivers = {}
 
