@@ -52,10 +52,11 @@ on linux run in a shell:
 
 Sigbit is configured through a config.ini file. The location on this file is depending on your operating system and it is created during the first startup of the application. 
 
-SigBit uses the first detected serial port by default. If you use a USB to serial adapter, it is advised to have it plugged in during the first startup of SigBit, so it can detect the serial port and write it to the configfile. Otherwise, and in some other cases, you may have do specify the correct serial port in the configfile, manually.
+SigBit uses the first detected serial port by default. If you use a USB to serial adapter, it is advised to have it plugged in during the first startup of SigBit, so it can detect the serial port and write it to the configfile. Otherwise, and in some other cases, you may have do adjust this setting to the correct serial port in the configfile, manually.
 
-Comon values are /dev/ttyUSB0, /dev/ttyUSB1 or /devtty0, etc. 
-On windows it will be something like COM1, COM2, etc.
+Comon values on linux are **/dev/ttyUSB0**, **/dev/ttyUSB1**, etc for USB adapters or **/devttyS0**, **/devttyS1**, etc. for ports on the mainboard.  
+
+On windows it will be something like **COM1**, **COM2**, etc.
  
 
 >
@@ -77,9 +78,9 @@ You can edit the following variables to match your server IP or hostname and por
 	server_url = morse.spdns.org  #or IP address of alternative server
 	server_port = 7373
 	keyer_speed = 18 #WPM
-	serial_port = /dev/ttyUSB0
+	serial_port = /dev/ttyUSB0 #serial port to use
 	sidetone_freq = 550 #Hz
-	autoreconnect = True
+	autoreconnect = True #set to False if it causes problems with a server
 	decode_cw = True  #currently not used
 
 

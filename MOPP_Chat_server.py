@@ -17,7 +17,7 @@ from util import encode, decode, zfill, ljust
 
 SERVER_IP = "0.0.0.0"
 UDP_PORT = 7373
-CLIENT_TIMEOUT = 60 * 10
+CLIENT_TIMEOUT = 60 #* 10
 MAX_CLIENTS = 10
 KEEPALIVE = 10
 DEBUG = 1
@@ -139,8 +139,14 @@ while KeyboardInterrupt:
   try:
     data, addr = serversock.recvfrom(64)
     client = addr[0] + ':' + str(addr[1])
-    speed = decode_header(data)[2]
     
+    if data == b'': #just a heartbeat signal from the client
+      receivers[client] = time.time()
+      debug("heartbeat detected from %s " % client)
+      continue
+    
+    speed = decode_header(data)[2]
+        
     if client in receivers:
       if decode_payload(data) == encode(':qrt'):
         serversock.sendto(encode_buffer(encode('bye'),speed), addr)
@@ -162,7 +168,7 @@ while KeyboardInterrupt:
         broadcast (data, client)
         receivers[client] = time.time()
     else:
-      if decode_payload(data) == encode('hi') or decode_payload(data) == encode(':reconnect'):
+      if decode_payload(data) == encode('hi'):
         if (len(receivers) < MAX_CLIENTS):
           receivers[client] = time.time()
           if decode_payload(data) == encode('hi'):
