@@ -32,19 +32,14 @@ SigBit runs on python3 and requires the following non-standard libraries:
 
 - pyserial
 - sounddevice
+- appdirs
 
 The easiest way to obtain them is via pip3 install:
 
 on linux run in a shell: 
 	
-	pip3 install pyserial sounddevice
+	pip3 install pyserial sounddevice appdirs
 
-You may have to change the _key_ settings in main.py to reflect your serial port.
-	
-	key = "/dev/ttyUSB0"
-
-Comon values are /dev/ttyUSB0, /dev/ttyUSB1 or /devtty0, etc. 
-On windows it will be something like COM1, COM2, etc.
 
 On linux you need to add your user to the group _dialout_
 
@@ -55,23 +50,29 @@ on linux run in a shell:
 
 # settings
 
-Sigbit is configured through a config.ini file. The location on this file is dependin on your operating system.
+Sigbit is configured through a config.ini file. The location on this file is depending on your operating system and it is created during the first startup of the application. 
+
+SigBit uses the first detected serial port by default. If you use a USB to serial adapter, it is advised to have it plugged in during the first startup of SigBit, so it can detect the serial port and write it to the configfile. Otherwise, and in some other cases, you may have do specify the correct serial port in the configfile, manually.
+
+Comon values are /dev/ttyUSB0, /dev/ttyUSB1 or /devtty0, etc. 
+On windows it will be something like COM1, COM2, etc.
+ 
 
 >
 >On Linux, you will find the configuration file under: 
 >
->	/home/<username>/.config/SigBitTRX/0.1
+>	/home/<username>/.config/SigBitTRX/0.1  
 >
 >On Windows 7 it is under: 
 >
->	C:\\Users\\<username>\\AppData\\Local\\DJ5SE\\SigBitTRX
+>	C:\\Users\\<username>\\AppData\\Local\\DJ5SE\\SigBitTRX  
 >
 >On Mac it is:  
 >
->	/Users/<username>/Library/Application Support/SigBitTRX
+>	/Users/<username>/Library/Application Support/SigBitTRX  
 >
- 
-You can edit the following variables to match your server IP or hostname and port, as well as the keyer speed in WPM and the side tone frequency in Hz:
+  
+You can edit the following variables to match your server IP or hostname and port, as well as the keyer speed in WPM and the side tone frequency in Hz:  
 
 	server_url = morse.spdns.org  #or IP address of alternative server
 	server_port = 7373
