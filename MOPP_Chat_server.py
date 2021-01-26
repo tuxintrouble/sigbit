@@ -188,6 +188,5 @@ while KeyboardInterrupt:
   for c in receivers.copy().items():
     if c[1] + CLIENT_TIMEOUT < time.time():
       ip,port = c[0].split(':')
-      serversock.sendto(encode_buffer(encode(':bye'),speed), addr)
       del receivers[c[0]]
       debug ("Removing expired client %s" % c[0])

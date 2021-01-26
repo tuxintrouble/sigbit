@@ -15,20 +15,19 @@ class SDSidetone():
     """cPython Sounddevice based Sidetone functions with true Sinewave"""
 
     def __init__(self):
-        
+
         import time
         import sounddevice as sd
-        
+
 
         self.freq = 0 #default values will change
         self.wpm = 0 #default values will change
 
-
-        self.fs = 48000
-        sd.default.samplerate = 44100 #don't know why, but this works
-        #sd.default.blocksize = 384
+        #self.fs = 48000
+        self.fs = sd.query_devices("default")["default_samplerate"]
+        sd.default.blocksize = 2048
         sd.default.channels = 1
-        sd.default.latency="high"#0.025 #"low" #ditlen(15) / 1000 #sec
+        sd.default.latency=0.1
 
         self.Stim = sd.OutputStream(dtype='int16')
         self.Stim.start()
@@ -70,10 +69,10 @@ class SDSidetone():
         t = threading.Thread(target=self.Stim.write, args = [self.dit_sine])
         t.start()
         return time.time() #return the time when sound has started
-       
+
     def play_dah(self):
         import threading, time
-        """plays a dah tone in the soundcard, non blocking, returns start time of sound""" 
+        """plays a dah tone in the soundcard, non blocking, returns start time of sound"""
         t = threading.Thread(target=self.Stim.write, args = [self.dah_sine])
         t.start()
         return time.time() #return the time when sound has started
@@ -81,7 +80,7 @@ class SDSidetone():
     def play_text(self, text):
         """Play a text as morse code"""
         self.play_buffer(encode(text))
-       
+
 
     def play_buffer(self, buffer):
         """Play a buffer as morse code"""
@@ -95,9 +94,9 @@ class SDSidetone():
                 time.sleep(4 * ditlen(self.wpm))
             elif el == "00":
                 time.sleep(3 * ditlen(self.wpm))
-       
-        
-        
+
+
+
 
 class PWMSideTone():
     """uPython PWM based Sidetone functions with square wave"""
@@ -139,7 +138,7 @@ class PWMSideTone():
         self.pwm.duty(self.freq)
         self.eot_timer.init(mode = machine.Timer.ONE_SHOT, period = tl, callback = self.end_of_tone)
         return utime.ticks_ms() / 1000 #tone starting time in seconds
-        
+
     def play_dah(self):
         """plays a dit tone on PWM pin, non blocking, returns start time of sound"""
         tl = ditlen(self.wpm) * 3
@@ -150,7 +149,7 @@ class PWMSideTone():
     def play_text(self, text):
         """Play a text as morse code"""
         self.play_buffer(encode(text))
-       
+
 
     def play_buffer(self, buffer):
         """Play a buffer as morse code"""
@@ -165,5 +164,3 @@ class PWMSideTone():
             elif el == "00":
                 time.sleep(3 * ditlen(self.wpm))
 
-
-        

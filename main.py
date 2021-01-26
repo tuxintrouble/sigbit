@@ -40,17 +40,17 @@ if __name__ == "__main__":
         if buffer != None:
             trx.sendto(trx.encode_buffer(buffer, buzzer.wpm), (server_url,server_port))
             print(decode(buffer))
-            
-        if keyer.state == "state_start": 
+
+        if keyer.state == "state_start":
             time.sleep(0.05)
             data = trx.recv()
-            
+
             if data == b'': #got keepalive
                 if AUTORECONNECT:
                     trx.sendto(b'', (server_url,server_port)) #send heartbeat back
                 else:
                     pass
-    
+
             elif data != None:
                 print(decode(trx.decode_payload(data)))
                 buzzer.play_buffer(trx.decode_payload(data))
