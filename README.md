@@ -33,7 +33,7 @@ Besides the serial interface, you will need a soundcard for the tones and a netw
 
 ### binary release packages
 
-Simply download the binary package that suits your operating system and copy it to your desired location (e.e. ***/home/<username>/bin*** on linux or ***C:\Program Files\sigbit***)   
+Simply download the binary package that suits your operating system and copy it to your desired location (e.e. ***/home/your_user_name/bin*** on linux or ***C:\Program Files\sigbit***)   
 
 To run these binary packages, simply call them from a console window (type **cmd** on windows)
 
