@@ -23,7 +23,6 @@ class SDSidetone():
         self.freq = 0 #default values will change
         self.wpm = 0 #default values will change
 
-        #self.fs = 48000
         self.fs = sd.query_devices("default")["default_samplerate"]
         sd.default.blocksize = 2048
         sd.default.channels = 1
@@ -34,7 +33,6 @@ class SDSidetone():
 
         self.dit_sine = None
         self.dah_sine = None
-        #self.recompute_tones(1, 555)
         self.recompute_tones(18, 550)
 
     def recompute_tones(self,wpm,freq):
@@ -50,7 +48,20 @@ class SDSidetone():
             signal *= 32767
             signal = np.int16(signal)
             self.dit_sine = signal
-
+            #fade in
+            fade_in_end = 200
+            fade_in_sample = 0
+            percent_per_sample = 1 / fade_in_end
+            while fade_in_sample < fade_in_end:
+                self.dit_sine[fade_in_sample] = int(self.dit_sine[fade_in_sample] * percent_per_sample * fade_in_sample)
+                fade_in_sample +=1
+            #fade out
+            fadesample = -300
+            percent_per_sample = 1 / fadesample
+            while fadesample < 0:
+                self.dit_sine[fadesample] = int(self.dit_sine[fadesample] * percent_per_sample * fadesample)
+                fadesample +=1
+            
             #make a sinewave one dah long
             t = 3*ditlen(wpm)
             samples = np.arange(t * self.fs) / self.fs
@@ -58,6 +69,21 @@ class SDSidetone():
             signal *= 32767
             signal = np.int16(signal)
             self.dah_sine = signal
+            #fade in
+            fade_in_end = 200
+            fade_in_sample = 0
+            percent_per_sample = 1 / fade_in_end
+            while fade_in_sample < fade_in_end:
+                self.dah_sine[fade_in_sample] = int(self.dah_sine[fade_in_sample] * percent_per_sample * fade_in_sample)
+                fade_in_sample +=1
+            #fade out
+            fadesample = -300
+            percent_per_sample = 1 / fadesample
+            while fadesample < 0:
+                self.dah_sine[fadesample] = int(self.dah_sine[fadesample] * percent_per_sample * fadesample)
+                fadesample +=1
+
+
 
             #set new values for frq and wpm
             self.wpm = wpm
