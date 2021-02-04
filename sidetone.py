@@ -23,7 +23,8 @@ class SDSidetone():
         self.freq = 0 #default values will change
         self.wpm = 0 #default values will change
 
-        self.fs = sd.query_devices("default")["default_samplerate"]
+        #self.fs = sd.query_devices("default")["default_samplerate"]
+        self.fs = sd.query_devices(sd.default.device[1])["default_samplerate"]
         sd.default.blocksize = 2048
         sd.default.channels = 1
         sd.default.latency=0.1
