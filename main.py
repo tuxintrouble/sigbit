@@ -35,10 +35,19 @@ trx = TRX( buzzer,url=(server_url,server_port),timeout=0)
 
 if __name__ == "__main__":
 
-    print("SigBit client %s started." % __version__)
-    print("Send morse code 'hi' to connect to default server.")
+    print("SigBit %s by DJ5SE" % __version__)
+    print("-"*60)
+    print("Using server '%s' on port %i."%(server_url,server_port))
+    print("Serial port: '%s'" % serial_port)
+    print("Your user config file is here:\n'%s'" % cfg.config_file_name)
+    print("-"*60)
+    print("Keyer speed: %sWPM" % keyer_speed)
+    print("Tone frequency: %sHz" % sidetone_freq)
+    print("-"*60)
+    print("Send morse code 'hi' to connect to server.")
     print("Send morse code ':qrt' to disconnect before exiting client.")
     print("Use Ctrl + C to exit.")
+    print("-"*60)
     
     while KeyboardInterrupt:
         try:
@@ -62,5 +71,5 @@ if __name__ == "__main__":
                     buzzer.play_buffer(trx.decode_payload(data))
                     
         except (KeyboardInterrupt, SystemExit):
-            buzzer.play_buffer(encode("73 <sk> e e"))
+            buzzer.play_buffer(encode("<sk> e e"))
             sys.exit()
