@@ -35,22 +35,27 @@ trx = TRX( buzzer,url=(server_url,server_port),timeout=0)
 
 if __name__ == "__main__":
 
-    while True:
-        buffer = keyer.process_iambic()
-        if buffer != None:
-            trx.sendto(trx.encode_buffer(buffer, buzzer.wpm), (server_url,server_port))
-            print(decode(buffer))
+    while KeyboardInterrupt:
+        try:
+            buffer = keyer.process_iambic()
+            if buffer != None:
+                trx.sendto(trx.encode_buffer(buffer, buzzer.wpm), (server_url,server_port))
+                print(decode(buffer))
 
-        if keyer.state == "state_start":
-            time.sleep(0.05)
-            data = trx.recv()
+            if keyer.state == "state_start":
+                time.sleep(0.05)
+                data = trx.recv()
 
-            if data == b'': #got keepalive
-                if AUTORECONNECT:
-                    trx.sendto(b'', (server_url,server_port)) #send heartbeat back
-                else:
-                    pass
+                if data == b'': #got keepalive
+                    if AUTORECONNECT:
+                        trx.sendto(b'', (server_url,server_port)) #send heartbeat back
+                    else:
+                        pass
 
-            elif data != None:
-                print(decode(trx.decode_payload(data)))
-                buzzer.play_buffer(trx.decode_payload(data))
+                elif data != None:
+                    print(decode(trx.decode_payload(data)))
+                    buzzer.play_buffer(trx.decode_payload(data))
+                    
+        except (KeyboardInterrupt, SystemExit):
+            trx.sock.close()
+            break
