@@ -7,7 +7,7 @@
 #
 # main executable for SigBit client
 
-import threading, time
+import threading, time, sys
 from key import SerialKey as Key
 from sidetone import SDSidetone as Sidetone
 from keyer import Keyer
@@ -62,5 +62,5 @@ if __name__ == "__main__":
                     buzzer.play_buffer(trx.decode_payload(data))
                     
         except (KeyboardInterrupt, SystemExit):
-            trx.sock.close()
-            break
+            buzzer.play_buffer(encode("73 <sk> e e"))
+            sys.exit()
