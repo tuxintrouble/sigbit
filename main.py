@@ -35,6 +35,11 @@ trx = TRX( buzzer,url=(server_url,server_port),timeout=0)
 
 if __name__ == "__main__":
 
+    print("SigBit client %s started." % __version__)
+    print("Send morse code 'hi' to connect to default server.")
+    print("Send morse code ':qrt' to disconnect before exiting client.")
+    print("Use Ctrl + C to exit.")
+    
     while KeyboardInterrupt:
         try:
             buffer = keyer.process_iambic()
