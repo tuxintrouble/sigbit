@@ -24,6 +24,9 @@ To interface your key to the computer, you can build a very simple adapter which
 >| 8             | right paddle | ring             |
 
 
+![TRS-2-Serial-Adapter for morse paddle](/img/paddle_adapter.png)
+
+
 Besides the serial interface, you will need a soundcard for the tones and a network or internet connection.
 
 ## software installation
