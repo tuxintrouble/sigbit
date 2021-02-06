@@ -38,12 +38,10 @@ Simply download the binary package that suits your operating system and copy it 
 To run these binary packages, simply call them from a console window (type **cmd** on windows)
 
 **current releases**
-
-[sigbit-trx_linux_64_0.1.2.app](https://github.com/tuxintrouble/sigbit/blob/main/dist-bin/sigbit-trx_linux_64_0.1.2.app)
+Please find the current binary packages for Linux and Windows here:
+[sigbit-trx_linux_64_x.x.x](https://github.com/tuxintrouble/sigbit/tree/main/dist-bin)
     
-[sigbit-trx_win32_0.1.2.exe](https://github.com/tuxintrouble/sigbit/blob/main/dist-bin/sigbit-trx_win32_0.1.0.exe)
 
-[sigbit-trx_win64_0.1.2.exe](https://github.com/tuxintrouble/sigbit/blob/main/dist-bin/sigbit-trx_win64_0.1.0.exe)
 
 ### source installation
 
