@@ -12,7 +12,7 @@ import socket, time, os
 from math import ceil
 from util import morse, zfill, ljust
 
-DEBUG=1
+DEBUG=0
 def debug(s):
     if DEBUG:
         print(s)

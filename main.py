@@ -17,6 +17,11 @@ from appconfig import AppConfig
 
 __version__= "0.1"
 
+DEBUG=0
+def debug(s):
+    if DEBUG:
+        print(s)
+
 cfg = AppConfig("SigBitTRX","DJ5SE",__version__)
 
 server_url = cfg.get('server_url')
@@ -53,6 +58,7 @@ if __name__ == "__main__":
         try:
             buffer = keyer.process_iambic()
             if buffer != None:
+                ##TODO filter for commands here
                 trx.sendto(trx.encode_buffer(buffer, buzzer.wpm), (server_url,server_port))
                 print(decode(buffer))
 
@@ -69,7 +75,7 @@ if __name__ == "__main__":
                 elif data != None:
                     #recalculate buzz for recv speed and tone
                     recv_speed = trx.decode_header(data)[2]
-                    print("recv_speed: %i" %recv_speed)
+                    debug("recv_speed: %i" %recv_speed)
                     buzzer.recompute_tones(recv_speed,sidetone_freq)
                     print(decode(trx.decode_payload(data)))
                     buzzer.play_buffer(trx.decode_payload(data))
