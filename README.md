@@ -65,6 +65,7 @@ on linux run in a shell:
 
 	sudo adduser <your_user_name> dialout
 
+relogin to your system to apply group changes 
 
 # settings
 
