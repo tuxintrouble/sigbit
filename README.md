@@ -31,19 +31,9 @@ Besides the serial interface, you will need a soundcard for the tones and a netw
 
 ## software installation
 
-### binary release packages
-
-Simply download the binary package that suits your operating system and copy it to your desired location (e.e. ***/home/your_user_name/bin*** on linux or ***C:\Program Files\sigbit***)   
-
-To run these binary packages, simply call them from a console window (type **cmd** on windows)
-
-**current releases**
-Please find the current binary packages for Linux and Windows here:
-[sigbit-trx_linux_64_x.x.x](https://github.com/tuxintrouble/sigbit/tree/main/dist-bin)
-    
-
-
 ### source installation
+
+(Note: if you prefer a single executeable file, skip this section and refer to the binary release packages section) 
 
 SigBit runs on python3 and requires the following non-standard libraries:
 
@@ -59,13 +49,27 @@ on linux run in a shell:
 	sudo python3 pip install pyserial sounddevice appdirs numpy
 
 
-On linux you need to add your user to the group _dialout_
+On linux you also need to add your user to the group _dialout_ to grant permission to use the serial port.
 
 on linux run in a shell: 
 
 	sudo adduser <your_user_name> dialout
 
-relogin to your system to apply group changes 
+relogin to your system to apply group changes
+
+
+### binary release packages
+
+Simply download the binary package that suits your operating system and copy it to your desired location (e.e. ***/home/your_user_name/bin*** on linux or ***C:\Program Files\sigbit***)   
+
+To run these binary packages, simply call them from a console window (type **cmd** on windows)
+
+**current releases**
+Please find the current binary packages for Linux and Windows in the separate sigbit-binaries repository:
+[https://github.com/tuxintrouble/sigbit-binaries](https://github.com/tuxintrouble/sigbit-binaries)
+
+(Note: source installation is usually more current and thus preferred)
+    
 
 # settings
 
