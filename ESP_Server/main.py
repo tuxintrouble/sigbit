@@ -13,7 +13,7 @@ import socket
 import time
 import struct
 from math import ceil
-from util import encode, decode, zfill, ljust
+from util import encode, decode, zfill, ljust, ditlen
 
 from machine import Pin
 
@@ -129,6 +129,10 @@ def welcome(client, speed):
   ip,port = client.split(':')
   serversock.sendto(encode_buffer(encode('welcome'),speed), addr)
   receivers[client] = time.time()
+  time.sleep(2)
+  serversock.sendto(encode_buffer(encode('qrv'),speed), addr)
+  time.sleep(ditlen(speed)*7)
+  serversock.sendto(encode_buffer(encode('%i' %len(receivers)),speed), addr)
   debug("New client: %s" % client)
 
 def reject(client, speed):
