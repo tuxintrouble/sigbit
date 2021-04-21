@@ -48,7 +48,7 @@ def encode_buffer(buffer,wpm):
   '''creates an bytes for sending throught a socket'''
 
   #prevent overflow in wpm - we have only 6 bits in MOPP
-  if wpm < 63:
+  if wpm > 63:
       wpm = 63
 
   #create 14 bit header

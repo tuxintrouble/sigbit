@@ -67,8 +67,14 @@ if __name__ == "__main__":
                         pass
 
                 elif data != None:
+                    #recalculate buzz for recv speed and tone
+                    recv_speed = trx.decode_header(data)[2]
+                    print("recv_speed: %i" %recv_speed)
+                    buzzer.recompute_tones(recv_speed,sidetone_freq)
                     print(decode(trx.decode_payload(data)))
                     buzzer.play_buffer(trx.decode_payload(data))
+                    #restore buzz for send speed and tone
+                    buzzer.recompute_tones(keyer_speed,sidetone_freq)
                     
         except (KeyboardInterrupt, SystemExit):
             buzzer.play_buffer(encode("<sk> e e"))

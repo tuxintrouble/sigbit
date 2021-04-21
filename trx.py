@@ -64,13 +64,15 @@ class TRX():
         11 = End of Word
         """
         #prevent overflow in wpm - we have only 6 bits
-        if wpm < 63:
+        if wpm > 63:
             wpm = 63
             
         #create 14 bit header
         m = zfill(bin(self.protocol_version)[2:],2) #2bits for protocol_version
         m += zfill(bin(self.serial)[2:],6) #6bits for serial number
         m += zfill(bin(wpm)[2:],6) #6bits for words per minute
+        debug(wpm)
+        debug(zfill(bin(wpm)[2:],6))
 
         #add payload
         for el in buffer:
