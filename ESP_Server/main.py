@@ -26,7 +26,7 @@ CLIENT_TIMEOUT = 60 * 10
 MAX_CLIENTS = 10
 KEEPALIVE = 10
 DEBUG = 0
-ECHO =False
+ECHO = False
 
 serversock = socket.socket(socket.AF_INET,socket.SOCK_DGRAM)
 serversock.bind((SERVER_IP, UDP_PORT))
@@ -102,7 +102,7 @@ def decode_payload(unicodestring):
 
   m_payload = bitstring[14:] #we just need the payload here
 
-  buffer =[]
+  buffer = []
   for i in range(0, len(m_payload),2):
     el = m_payload[i]+m_payload[i+1]
     buffer.append(el)

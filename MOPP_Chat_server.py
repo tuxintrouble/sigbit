@@ -21,7 +21,7 @@ CLIENT_TIMEOUT = 60 #* 10
 MAX_CLIENTS = 10
 KEEPALIVE = 10
 DEBUG = 1
-ECHO =True
+ECHO = False
 
 serversock = socket.socket(socket.AF_INET,socket.SOCK_DGRAM)
 serversock.bind((SERVER_IP, UDP_PORT))
@@ -43,7 +43,7 @@ def encode_buffer(buffer,wpm):
   '''creates an bytes for sending throught a socket'''
 
   #prevent overflow in wpm - we have only 6 bits in MOPP
-  if wpm < 63:
+  if wpm > 63:
       wpm = 63
 
   #create 14 bit header
@@ -97,7 +97,7 @@ def decode_payload(unicodestring):
 
   m_payload = bitstring[14:] #we just need the payload here
 
-  buffer =[]
+  buffer = []
   for i in range(0, len(m_payload),2):
     el = m_payload[i]+m_payload[i+1]
     buffer.append(el)
@@ -121,6 +121,10 @@ def welcome(client, speed):
   ip,port = client.split(':')
   serversock.sendto(encode_buffer(encode('welcome'),speed), addr)
   receivers[client] = time.time()
+  time.sleep(2)
+  serversock.sendto(encode_buffer(encode('qrv'),speed), addr)
+  time.sleep(ditlen(speed)*7)
+  serversock.sendto(encode_buffer(encode('%i' %len(receivers)),speed), addr)
   debug("New client: %s" % client)
 
 def reject(client, speed):
