@@ -60,7 +60,8 @@ if __name__ == "__main__":
             if buffer != None:
                 ##TODO filter for commands here
                 trx.sendto(trx.encode_buffer(buffer, buzzer.wpm), (server_url,server_port))
-                print(decode(buffer))
+                if decode_cw:
+                    print(decode(buffer))
 
             if keyer.state == "state_start":
                 time.sleep(0.05)
@@ -77,7 +78,8 @@ if __name__ == "__main__":
                     recv_speed = trx.decode_header(data)[2]
                     debug("recv_speed: %i" %recv_speed)
                     buzzer.recompute_tones(recv_speed,sidetone_freq)
-                    print(decode(trx.decode_payload(data)))
+                    if decode_cw:
+                        print(decode(trx.decode_payload(data)))
                     buzzer.play_buffer(trx.decode_payload(data))
                     #restore buzz for send speed and tone
                     buzzer.recompute_tones(keyer_speed,sidetone_freq)
