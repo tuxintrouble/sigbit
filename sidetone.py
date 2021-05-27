@@ -24,12 +24,14 @@ class SDSidetone():
         self.wpm = 0 #default values will change
 
         #self.fs = sd.query_devices("default")["default_samplerate"]
-        self.fs = sd.query_devices(sd.default.device[1])["default_samplerate"]
-        sd.default.blocksize = 2048
+        #self.fs = sd.query_devices(sd.default.device[1])["default_samplerate"]
+        self.fs = 44100
+        #sd.default.blocksize = 2048
+        sd.default.blocksize = 0
         sd.default.channels = 1
-        sd.default.latency=0.1
+        sd.default.latency="low"#0.1
 
-        self.Stim = sd.OutputStream(dtype='int16')
+        self.Stim = sd.OutputStream(dtype='int16', samplerate=self.fs, blocksize=0)
         self.Stim.start()
 
         self.dit_sine = None
@@ -62,7 +64,7 @@ class SDSidetone():
             while fadesample < 0:
                 self.dit_sine[fadesample] = int(self.dit_sine[fadesample] * percent_per_sample * fadesample)
                 fadesample +=1
-            
+
             #make a sinewave one dah long
             t = 3*ditlen(wpm)
             samples = np.arange(t * self.fs) / self.fs
@@ -91,7 +93,7 @@ class SDSidetone():
             self.freq = freq
 
     def play_dit(self):
-        """plays a dit tone in the soundcard, non blocking, returns start time of sound"""
+        """plays a dit tone on the soundcard, non blocking, returns start time of sound"""
         import threading, time
         t = threading.Thread(target=self.Stim.write, args = [self.dit_sine])
         t.start()
@@ -99,7 +101,7 @@ class SDSidetone():
 
     def play_dah(self):
         import threading, time
-        """plays a dah tone in the soundcard, non blocking, returns start time of sound"""
+        """plays a dah tone on the soundcard, non blocking, returns start time of sound"""
         t = threading.Thread(target=self.Stim.write, args = [self.dah_sine])
         t.start()
         return time.time() #return the time when sound has started
@@ -190,4 +192,3 @@ class PWMSideTone():
                 time.sleep(4 * ditlen(self.wpm))
             elif el == "00":
                 time.sleep(3 * ditlen(self.wpm))
-
