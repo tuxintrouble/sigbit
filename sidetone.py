@@ -23,7 +23,6 @@ class SDSidetone():
         self.freq = 0 #default values will change
         self.wpm = 0 #default values will change
 
-        #self.fs = sd.query_devices("default")["default_samplerate"]
         #self.fs = sd.query_devices(sd.default.device[1])["default_samplerate"]
         self.fs = 44100
         #sd.default.blocksize = 2048

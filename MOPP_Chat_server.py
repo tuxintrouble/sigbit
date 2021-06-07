@@ -13,7 +13,7 @@ import socket
 import time
 import struct
 from math import ceil
-from util import encode, decode, zfill, ljust
+from util import *
 
 SERVER_IP = "0.0.0.0"
 UDP_PORT = 7373
