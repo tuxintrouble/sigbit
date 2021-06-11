@@ -17,7 +17,7 @@ from util import encode, decode, zfill, ljust, ditlen
 
 SERVER_IP = "0.0.0.0"
 UDP_PORT = 7373
-CLIENT_TIMEOUT = 60 #* 10
+CLIENT_TIMEOUT = 240 #seconds
 MAX_CLIENTS = 10
 KEEPALIVE = 10
 DEBUG = 1
@@ -28,7 +28,7 @@ serversock.bind((SERVER_IP, UDP_PORT))
 serversock.settimeout(KEEPALIVE)
 
 receivers = {}
-
+last_time_heartbeat_checked = time.time()
 protocol_version = 1
 serial = 1
 
@@ -180,6 +180,8 @@ while KeyboardInterrupt:
 
   except socket.timeout:
     # Send UDP keepalives
+    # Explanation: we are always trying to receive packets. If nothing is sent, the connection will timeout.
+    # This timeout triggers the sending of empty hearbeat packets to all clients. If the clients respond, their session gets updated.
     for c in receivers.keys():
       ip,port = c.split(':')
       serversock.sendto(b'', addr)
@@ -187,6 +189,14 @@ while KeyboardInterrupt:
   except (KeyboardInterrupt, SystemExit):
     serversock.close()
     break
+
+#Experimental:
+#Send additional heartbeat to all clients in list give them a chance to stay connected
+#send twice in a timeout period since UDP might get lost
+if last_time_heartbeat_checked + (CLIENT_TIMEOUT / 2) > time.time():  
+  for c in receivers.keys():
+        ip,port = c.split(':')
+        serversock.sendto(b'', addr)
 
   # clean clients list
   for c in receivers.copy().items():
