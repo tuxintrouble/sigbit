@@ -192,7 +192,6 @@ while KeyboardInterrupt:
     # This timeout triggers the sending of empty hearbeat packets to all clients. If the clients respond, their session gets updated.
     for c in receivers.keys():
       ip,port = c.split(':')
-      #serversock.sendto(b'', addr)
       serversock.sendto(b'', (ip,int(port)))
 
   except (KeyboardInterrupt, SystemExit):
@@ -202,6 +201,5 @@ while KeyboardInterrupt:
   # clean clients list
   for c in receivers.copy().items():
     if c[1] + CLIENT_TIMEOUT < time.time():
-      #ip,port = c[0].split(':')
       del receivers[c[0]]
       debug ("Removing expired client %s" % c[0])
