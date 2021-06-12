@@ -15,12 +15,15 @@ import struct
 from math import ceil
 from util import encode, decode, zfill, ljust, ditlen
 
+from datetime import datetime
+
 SERVER_IP = "0.0.0.0"
 UDP_PORT = 7373
-CLIENT_TIMEOUT = 240 #seconds
+CLIENT_TIMEOUT = 60 #seconds
 MAX_CLIENTS = 10
 KEEPALIVE = 10
 DEBUG = 1
+LOG = 1
 ECHO = False
 
 serversock = socket.socket(socket.AF_INET,socket.SOCK_DGRAM)
@@ -28,14 +31,19 @@ serversock.bind((SERVER_IP, UDP_PORT))
 serversock.settimeout(KEEPALIVE)
 
 receivers = {}
-last_time_heartbeat_checked = time.time()
+
 protocol_version = 1
 serial = 1
 
+
 def debug(str):
   if DEBUG:
-    print(str)
-    
+    print(datetime.now().strftime("%d-%m-%Y, %H:%M:%S -") + str)
+    if LOG:
+      logfile = open("MOPPLog.txt","a")
+      logfile.write((datetime.now().strftime("%d-%m-%Y, %H:%M:%S -") + str+"\n"))
+      logfile.close()
+      
 def encode_buffer(buffer,wpm):
 
   global protocol_version
@@ -138,7 +146,7 @@ while KeyboardInterrupt:
     data, addr = serversock.recvfrom(64)
     client = addr[0] + ':' + str(addr[1])
     
-    if data == b'': #just a heartbeat signal from the client
+    if client in receivers and data == b'': #just a heartbeat signal from the client
       receivers[client] = time.time()
       debug("heartbeat detected from %s " % client)
       continue
@@ -173,10 +181,10 @@ while KeyboardInterrupt:
           	welcome(client, speed)
         else:
           reject(client, speed)
-          debug ("ERR: maximum clients reached")
+          debug ("ERR: maximum clients reached- %s" %client)
 
       else:
-        debug ("-unknown client, ignoring-")
+        debug ("-unknown client, ignoring- %s" %client)
 
   except socket.timeout:
     # Send UDP keepalives
@@ -184,23 +192,16 @@ while KeyboardInterrupt:
     # This timeout triggers the sending of empty hearbeat packets to all clients. If the clients respond, their session gets updated.
     for c in receivers.keys():
       ip,port = c.split(':')
-      serversock.sendto(b'', addr)
+      #serversock.sendto(b'', addr)
+      serversock.sendto(b'', (ip,int(port)))
 
   except (KeyboardInterrupt, SystemExit):
     serversock.close()
     break
 
-#Experimental:
-#Send additional heartbeat to all clients in list give them a chance to stay connected
-#send twice in a timeout period since UDP might get lost
-if last_time_heartbeat_checked + (CLIENT_TIMEOUT / 2) > time.time():  
-  for c in receivers.keys():
-        ip,port = c.split(':')
-        serversock.sendto(b'', addr)
-
   # clean clients list
   for c in receivers.copy().items():
     if c[1] + CLIENT_TIMEOUT < time.time():
-      ip,port = c[0].split(':')
+      #ip,port = c[0].split(':')
       del receivers[c[0]]
       debug ("Removing expired client %s" % c[0])
