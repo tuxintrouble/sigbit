@@ -19,7 +19,7 @@ from datetime import datetime
 
 SERVER_IP = "0.0.0.0"
 UDP_PORT = 7373
-CLIENT_TIMEOUT = 60 #seconds
+CLIENT_TIMEOUT = 60*5 #seconds
 MAX_CLIENTS = 10
 KEEPALIVE = 10
 DEBUG = 1
@@ -86,7 +86,7 @@ def decode_header(unicodestring):
   
   for byte in bytestring:
     bitstring += zfill(bin(ord(byte))[2:],8) #works in uPython
-
+  debug(bitstring)#check content
   m_protocol = int(bitstring[:2],2)
   m_serial = int(bitstring[3:8],2)
   m_wpm = int(bitstring[9:14],2)
@@ -151,7 +151,7 @@ while KeyboardInterrupt:
       debug("heartbeat detected from %s " % client)
       continue
     
-    if client in receivers:
+    if client in receivers and data != b'':
       speed = decode_header(data)[2]
       if decode_payload(data) == encode(':qrt'):
         serversock.sendto(encode_buffer(encode('bye'),speed), addr)
@@ -172,7 +172,7 @@ while KeyboardInterrupt:
       else:
         broadcast (data, client)
         receivers[client] = time.time()
-    else:
+    elif data != b'':
       speed = decode_header(data)[2]
       if decode_payload(data) == encode('hi'):
         if (len(receivers) < MAX_CLIENTS):

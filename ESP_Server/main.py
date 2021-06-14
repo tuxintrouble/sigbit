@@ -152,7 +152,7 @@ while KeyboardInterrupt:
       continue
 
 
-    if client in receivers:
+    if client in receivers and data != b'':
       speed = decode_header(data)[2]    
       if decode_payload(data) == encode(':qrt'):
         serversock.sendto(encode_buffer(encode('bye'),speed), addr)
@@ -173,7 +173,7 @@ while KeyboardInterrupt:
       else:
         broadcast (data, client)
         receivers[client] = time.time()
-    else:
+    elif data != b'':
       speed = decode_header(data)[2]
       if decode_payload(data) == encode('hi'):
         if (len(receivers) < MAX_CLIENTS):
@@ -202,7 +202,8 @@ while KeyboardInterrupt:
     # This timeout triggers the sending of empty hearbeat packets to all clients. If the clients respond, their session gets updated.    
     for c in receivers.keys():
       ip,port = c.split(':')
-      serversock.sendto(b'', (ip,int(port)))   
+      serversock.sendto(b'', (ip,int(port)))
+      last_time_heartbeat=time.time()
 
   except (KeyboardInterrupt, SystemExit):
     serversock.close()
