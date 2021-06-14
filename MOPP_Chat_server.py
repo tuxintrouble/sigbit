@@ -31,7 +31,7 @@ serversock.bind((SERVER_IP, UDP_PORT))
 serversock.settimeout(KEEPALIVE)
 
 receivers = {}
-
+last_time_heartbeat=time.time()
 protocol_version = 1
 serial = 1
 
@@ -151,9 +151,8 @@ while KeyboardInterrupt:
       debug("heartbeat detected from %s " % client)
       continue
     
-    speed = decode_header(data)[2]
-        
     if client in receivers:
+      speed = decode_header(data)[2]
       if decode_payload(data) == encode(':qrt'):
         serversock.sendto(encode_buffer(encode('bye'),speed), addr)
         del receivers[client]
@@ -174,6 +173,7 @@ while KeyboardInterrupt:
         broadcast (data, client)
         receivers[client] = time.time()
     else:
+      speed = decode_header(data)[2]
       if decode_payload(data) == encode('hi'):
         if (len(receivers) < MAX_CLIENTS):
           receivers[client] = time.time()
@@ -184,7 +184,16 @@ while KeyboardInterrupt:
           debug ("ERR: maximum clients reached- %s" %client)
 
       else:
-        debug ("-unknown client, ignoring- %s" %client)
+        pass
+        #debug ("-unknown client, ignoring- %s" %client)
+
+      
+    #send keepalives if not sent the last 10 secs
+    for c in receivers.keys():
+      if last_time_heartbeat + 10 < time.time():
+        ip,port = c.split(':')
+        serversock.sendto(b'', (ip,int(port)))
+        last_time_heartbeat=time.time()
 
   except socket.timeout:
     # Send UDP keepalives
@@ -193,6 +202,7 @@ while KeyboardInterrupt:
     for c in receivers.keys():
       ip,port = c.split(':')
       serversock.sendto(b'', (ip,int(port)))
+      last_time_heartbeat=time.time()
 
   except (KeyboardInterrupt, SystemExit):
     serversock.close()
