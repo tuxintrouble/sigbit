@@ -19,8 +19,8 @@ from appconfig import AppConfig
 
 __version__= "0.1"
 
-DEBUG=1
-LOG=1
+DEBUG=0
+LOG=0
 
 def debug(s):
     if DEBUG:
