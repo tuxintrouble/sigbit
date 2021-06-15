@@ -14,7 +14,6 @@ import time
 import struct
 from math import ceil
 from util import encode, decode, zfill, ljust, ditlen
-
 from datetime import datetime
 
 SERVER_IP = "0.0.0.0"
@@ -36,12 +35,12 @@ protocol_version = 1
 serial = 1
 
 
-def debug(str):
+def debug(s):
   if DEBUG:
-    print(datetime.now().strftime("%d-%m-%Y, %H:%M:%S -") + str)
+    print(datetime.now().strftime("%d-%m-%Y, %H:%M:%S -") + s)
     if LOG:
       logfile = open("MOPPLog.txt","a")
-      logfile.write((datetime.now().strftime("%d-%m-%Y, %H:%M:%S -") + str+"\n"))
+      logfile.write((datetime.now().strftime("%d-%m-%Y, %H:%M:%S -") + s+"\n"))
       logfile.close()
       
 def encode_buffer(buffer,wpm):

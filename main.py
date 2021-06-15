@@ -8,6 +8,7 @@
 # main executable for SigBit client
 
 import threading, time, sys
+from datetime import datetime
 from key import SerialKey as Key
 from sidetone import SDSidetone as Sidetone
 from keyer import Keyer
@@ -15,12 +16,19 @@ from util import morse, decode, encode
 from trx import *
 from appconfig import AppConfig
 
+
 __version__= "0.1"
 
-DEBUG=0
+DEBUG=1
+LOG=1
+
 def debug(s):
     if DEBUG:
-        print(s)
+        print(datetime.now().strftime("%d-%m-%Y, %H:%M:%S -") + s)
+        if LOG:
+          logfile = open("SigBitLog.txt","a")
+          logfile.write((datetime.now().strftime("%d-%m-%Y, %H:%M:%S -") + s+"\n"))
+          logfile.close()
 
 cfg = AppConfig("SigBitTRX","DJ5SE",__version__)
 
@@ -31,6 +39,9 @@ sidetone_freq = cfg.getint("sidetone_freq")
 keyer_speed = cfg.getint("keyer_speed")
 AUTORECONNECT = cfg.getboolean('autoreconnect')
 decode_cw = cfg.getboolean("decode_cw")
+
+last_msg_recv = 0
+connected_to_server = True
 
 key = Key(serial_port)
 buzzer = Sidetone()
@@ -55,7 +66,7 @@ if __name__ == "__main__":
     print("-"*60)
     
     while KeyboardInterrupt:
-        try:
+        try:      
             buffer = keyer.process_iambic()
             if buffer != None:
                 ##TODO filter for commands here
@@ -68,12 +79,17 @@ if __name__ == "__main__":
                 data = trx.recv()
 
                 if data == b'': #got keepalive
-                    if AUTORECONNECT:
+                    last_msg_recv = time.time()
+                    debug("heartbeat received")
+                    if AUTORECONNECT and connected_to_server:
                         trx.sendto(b'', (server_url,server_port)) #send heartbeat back
+                        debug("heartbeat replied")
                     else:
                         pass
 
                 elif data != None:
+                    debug(str(data))
+                    last_msg_recv = time.time()
                     #recalculate buzz for recv speed and tone
                     recv_speed = trx.decode_header(data)[2]
                     debug("recv_speed: %i" %recv_speed)
@@ -83,6 +99,14 @@ if __name__ == "__main__":
                     buzzer.play_buffer(trx.decode_payload(data))
                     #restore buzz for send speed and tone
                     buzzer.recompute_tones(keyer_speed,sidetone_freq)
+
+            #if received no packets from server for more than 60 secs, try to reconnect.
+            #this way we can reconnect in case we got a new IP after 24hrs
+            #we use a long timeout as longer transmissions might prevent the client from receiving
+            if last_msg_recv + 60 < time.time() and AUTORECONNECT and connected_to_server: 
+                trx.sendto(trx.encode_buffer(encode("hi"), buzzer.wpm), (server_url,server_port))
+                debug("reconnect request sent as we lost contact to server")
+                
                     
         except (KeyboardInterrupt, SystemExit):
             buzzer.play_buffer(encode("<sk> e e"))

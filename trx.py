@@ -33,14 +33,18 @@ class TRX():
         try:
             self.sock.sendto(data,url)
         except:
-            self.buzzer.play_text("error")
+            debug("tx error")            
+            self.buzzer.play_text("txerror")
             
     def recv(self):
         data=None
         try:
             data = self.sock.recv(64)
         except:
+            #nothing to receive
             pass
+
+            
         #return[decode_header(data),decode_payload(data)]
         return data
 
