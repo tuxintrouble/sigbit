@@ -105,6 +105,7 @@ if __name__ == "__main__":
             #we use a long timeout as longer transmissions might prevent the client from receiving
             if last_msg_recv + 60 < time.time() and AUTORECONNECT and connected_to_server: 
                 trx.sendto(trx.encode_buffer(encode("hi"), buzzer.wpm), (server_url,server_port))
+                last_msg_recv = time.time()#only reconnect once and check again in 60 secs
                 debug("reconnect request sent as we lost contact to server")
                 
                     
