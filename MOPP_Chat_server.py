@@ -96,7 +96,7 @@ def decode_header(unicodestring):
 
 def decode_payload(unicodestring):
   '''converts a received morse code byte string to text'''
-  bytestring = unicodestring.decode("utf-8")
+  bytestring = unicodestring.decode("utf-8", errors='ignore')
   bitstring = ''
 	
   for byte in bytestring:
