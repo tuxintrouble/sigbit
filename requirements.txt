@@ -1,0 +1,4 @@
+pyserial 
+sounddevice 
+appdirs 
+numpy

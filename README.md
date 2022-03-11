@@ -44,9 +44,9 @@ SigBit runs on python3 and requires the following non-standard libraries:
 
 The easiest way to obtain them is via pip3 install:
 
-on linux run in a shell: 
+on linux/osx run in a shell: 
 	
-	sudo python3 pip install pyserial sounddevice appdirs numpy
+	pip3 install pyserial sounddevice appdirs numpy
 
 
 On linux you also need to add your user to the group _dialout_ to grant permission to use the serial port.
