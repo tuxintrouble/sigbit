@@ -80,7 +80,8 @@ def encode_buffer(buffer,wpm):
 def decode_header(unicodestring):
   '''converts a received morse code byte string and returns a list
   with the header info [protocol_v, serial, wpm]''' 
-  bytestring = unicodestring.decode("utf-8")
+  #bytestring = unicodestring.decode("utf-8")
+  bytestring = unicodestring.decode("utf-8", errors='ignore')
   bitstring = ''
   
   for byte in bytestring:
