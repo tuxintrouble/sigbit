@@ -1,0 +1,2 @@
+- 0.2 - docker for chat server
+- 0.1 - fix encoding
