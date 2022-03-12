@@ -31,6 +31,10 @@ Besides the serial interface, you will need a soundcard for the tones and a netw
 
 ## software installation
 
+### docker server installation
++ `docker build . -t mopp_chat_server`
++ `docker run --rm -it -p 7373:7373/udp mopp_chat_server`
+
 ### source installation
 
 (Note: if you prefer a single executeable file, skip this section and refer to the binary release packages section) 
@@ -44,9 +48,9 @@ SigBit runs on python3 and requires the following non-standard libraries:
 
 The easiest way to obtain them is via pip3 install:
 
-on linux run in a shell: 
+on linux/osx run in a shell: 
 	
-	sudo python3 pip install pyserial sounddevice appdirs numpy
+	pip3 install pyserial sounddevice appdirs numpy
 
 
 On linux you also need to add your user to the group _dialout_ to grant permission to use the serial port.
