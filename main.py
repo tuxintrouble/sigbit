@@ -65,8 +65,10 @@ if __name__ == "__main__":
     print("Use Ctrl + C to exit.")
     print("-"*60)
 
+    print ("Try to connect")
     trx.sendto(trx.encode_buffer(encode("hi"), buzzer.wpm), (server_url,server_port))
-    
+    print ("Done")
+
     while KeyboardInterrupt:
         try:      
             buffer = keyer.process_iambic()
