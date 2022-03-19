@@ -3,4 +3,3 @@ sounddevice
 appdirs 
 numpy
 tk
-serial
