@@ -34,7 +34,7 @@ class TRX():
             self.sock.sendto(data,url)
         except:
             debug("tx error")            
-            self.buzzer.play_text("txerror")
+            #self.buzzer.play_text("txerror")
             
     def recv(self):
         data=None
