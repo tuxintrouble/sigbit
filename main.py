@@ -64,6 +64,8 @@ if __name__ == "__main__":
     print("Send morse code ':qrt' to disconnect before exiting client.")
     print("Use Ctrl + C to exit.")
     print("-"*60)
+
+    trx.sendto(trx.encode_buffer(encode("hi"), buzzer.wpm), (server_url,server_port))
     
     while KeyboardInterrupt:
         try:      
