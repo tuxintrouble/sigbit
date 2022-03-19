@@ -33,7 +33,7 @@ class AppConfig():
             first_serial_port = serial.tools.list_ports.comports()[0][0]
             
         self.config['DEFAULT'] = {
-            'server_url' : 'morse.spdns.org',
+            'server_url' : '49.12.102.144',
             'server_port' : '7373',
             'keyer_speed' : '18',
             'serial_port' : first_serial_port,
