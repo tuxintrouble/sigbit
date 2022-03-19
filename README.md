@@ -33,6 +33,12 @@ Besides the serial interface, you will need a soundcard for the tones and a netw
 
 ### OSX
 + `brew install python-tk`
+Maybe you want to use a virtual python environment?
+```
+python3 -m venv venv
+source ./venv/bin/activate
+pip3 install -r requirements.txt
+```
 
 ### docker server installation
 + `docker build . -t mopp_chat_server`
