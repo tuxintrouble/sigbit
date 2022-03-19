@@ -31,6 +31,9 @@ Besides the serial interface, you will need a soundcard for the tones and a netw
 
 ## software installation
 
+### OSX
++ `brew install python-tk`
+
 ### docker server installation
 + `docker build . -t mopp_chat_server`
 + `docker run --rm -it -p 7373:7373/udp mopp_chat_server`
