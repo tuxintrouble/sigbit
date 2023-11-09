@@ -19,7 +19,7 @@ from appconfig import AppConfig
 
 __version__= "0.1"
 
-DEBUG=0
+DEBUG=1
 LOG=0
 
 def debug(s):
@@ -64,7 +64,11 @@ if __name__ == "__main__":
     print("Send morse code ':qrt' to disconnect before exiting client.")
     print("Use Ctrl + C to exit.")
     print("-"*60)
-    
+
+    print ("Try to connect")
+    trx.sendto(trx.encode_buffer(encode("hi"), buzzer.wpm), (server_url,server_port))
+    print ("Done")
+
     while KeyboardInterrupt:
         try:      
             buffer = keyer.process_iambic()

@@ -12,7 +12,7 @@ import socket, time, os
 from math import ceil
 from util import morse, zfill, ljust
 
-DEBUG=0
+DEBUG=1
 def debug(s):
     if DEBUG:
         print(s)
@@ -34,7 +34,7 @@ class TRX():
             self.sock.sendto(data,url)
         except:
             debug("tx error")            
-            self.buzzer.play_text("txerror")
+            #self.buzzer.play_text("txerror")
             
     def recv(self):
         data=None
